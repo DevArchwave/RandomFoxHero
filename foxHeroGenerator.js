@@ -1,19 +1,5 @@
 import fetch from 'node-fetch';
 
-async function getRandomFoxHero() {
-    try {
-        const response = await fetch('https://randomfox.ca/floof/');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log("The fox hero '" + getRandomFoxName() + "' is a " + foxTitle(generateFoxExperience()) + " level fox. Take good care of them on your coding adventures!")
-        console.log(data.image);
-    } catch (error) {
-        console.error('Deu ruim:', error);
-    }
-}
-
 function getRandomFoxName() {
     const foxNames = ['Foxy', 'Red', 'Swift', 'Snow', 'Shadow', 'Blaze', 'Sky', 'Frost', 'Amber', 'Dusk'];
     const randomIndex = Math.floor(Math.random() * foxNames.length);
@@ -21,7 +7,7 @@ function getRandomFoxName() {
 }
 
 function generateFoxExperience() {
-    return Math.floor(Math.random() * 1001); //Numero entre 0 e 1000
+    return Math.floor(Math.random() * 1001); //Number between 0 and 1000.
 }
 
 function foxTitle(exp) {
@@ -62,4 +48,22 @@ function foxTitle(exp) {
     }
     return classification;
 }
+
+async function getRandomFoxHero() {
+    try {
+        const response = await fetch('https://randomfox.ca/floof/');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        const thisFoxName = getRandomFoxName();
+        const thisFoxTitle = foxTitle(generateFoxExperience());
+        const article = ['A', 'E', 'I', 'O', 'U'].includes(thisFoxTitle[0]) ? 'an' : 'a'; //grammar, shrug
+        console.log(`The fox hero '${thisFoxName}' is ${article} ${thisFoxTitle} level fox. Take good care of them on your coding adventures!`);
+        console.log(data.image);
+    } catch (error) {
+        console.error('We encountered a problem generating your fox:', error);
+    }
+}
+
 getRandomFoxHero();
